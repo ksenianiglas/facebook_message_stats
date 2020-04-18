@@ -1,5 +1,5 @@
 rm(list = ls())
-setwd("~/Documents/DataScience/messages")
+setwd("~/Documents/DataScience/messages") 
 
 library(tidyverse)
 library(jsonlite)
@@ -26,7 +26,7 @@ link_to_img <- function(x, size = 25) {
   paste0("<img src='", x, "' width='", size, "'/>")
 }
 
-dir <- "heiki"
+dir <- "angie" # name of folder with messanges
 
 df <- lapply(list.files(dir) %>% str_subset("json"), function(file) {
   json_file <- str_c(dir, "/", file)
@@ -77,11 +77,6 @@ df <- lapply(list.files(dir) %>% str_subset("json"), function(file) {
   arrange(when) %>%
   mutate(sender = str_extract(sender, "\\w*"))
 
-
-if (dir == "mama") {
-  df <- df %>%
-    filter(when > as_date("2014-01-01"))
-}
 
 #Chronological timeline ------
 p_06chrono <- df %>%
@@ -232,8 +227,7 @@ common_words <- df %>%
       mutate(is_emoji = msg %in% trimws(emj)) %>%
       filter(!(msg %in% c(common_words_rus, 
                           "d", "ж", "i",
-                          "<3", "😂😂", "😀😀",
-                          "😂😂😂")
+                          "<3"))
       )) %>%
       arrange(-count) %>%
       filter(is_emoji == FALSE) %>%
